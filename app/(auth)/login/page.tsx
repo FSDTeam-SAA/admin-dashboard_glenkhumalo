@@ -47,10 +47,11 @@ export default function LoginPage() {
 
     let accessToken: string | null = null;
     let refreshToken: string | null = null;
+    
     for (let attempt = 0; attempt < 3; attempt += 1) {
       const session = await getSession();
-      accessToken = session?.accessToken || null;
-      refreshToken = session?.refreshToken || null;
+      accessToken = (session as any)?.accessToken || null;
+      refreshToken = (session as any)?.refreshToken || null;
       if (accessToken) break;
       await new Promise((resolve) => setTimeout(resolve, 120));
     }
@@ -71,46 +72,66 @@ export default function LoginPage() {
   return (
     <AuthCard>
       <div className="mb-8 text-center">
-        <div className="mb-2 flex items-center justify-center gap-3">
-          <Image src="/icon-logo.png" alt="Solace logo" width={52} height={52} className="h-12 w-12" />
+        <div className="mb-4 flex flex-col items-center justify-center gap-3">
+          <Image 
+            src="/icon-logo.png" 
+            alt="Solace logo" 
+            width={60} 
+            height={60} 
+            className="mb-2"
+          />
+          <h1 className="text-3xl font-bold text-[#1E293B]">Solace Admin</h1>
+          <p className="text-slate-500 text-sm">Secure access for moderation & support</p>
         </div>
       </div>
 
-      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+        {/* Email Field */}
         <div className="relative">
-          <Mail className="pointer-events-none absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
-          <Input placeholder="Enter your email" className="h-14 pl-12 text-base" {...register("email")} />
-          {errors.email ? <p className="mt-1 text-sm text-red-500">{errors.email.message}</p> : null}
+          <Mail className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+          <Input 
+            placeholder="Enter your email" 
+            className="h-14 pl-12 border-slate-300 rounded-lg text-base focus-visible:ring-1 focus-visible:ring-slate-400" 
+            {...register("email")} 
+          />
+          {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
         </div>
 
+        {/* Password Field */}
         <div className="relative">
-          <Lock className="pointer-events-none absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
+          <Lock className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
           <Input
             type={showPassword ? "text" : "password"}
             placeholder="Enter your Password"
-            className="h-14 pl-12 pr-12 text-base"
+            className="h-14 pl-12 pr-12 border-slate-300 rounded-lg text-base focus-visible:ring-1 focus-visible:ring-slate-400"
             {...register("password")}
           />
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-3 top-3 text-slate-500"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
           >
-            {showPassword ? <EyeOff className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
+            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
-          {errors.password ? <p className="mt-1 text-sm text-red-500">{errors.password.message}</p> : null}
+          {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
         </div>
 
-        <div className="flex items-center justify-between text-lg">
-          <label className="flex items-center gap-2 text-slate-500">
-            <input type="checkbox" className="h-4 w-4" /> Remember me
-          </label>
-          <button type="button" onClick={() => router.push("/forgot-password")} className="text-red-500">
+        {/* Remember & Forgot Password */}
+        <div className="flex items-center justify-end text-sm">
+          <button 
+            type="button" 
+            onClick={() => router.push("/forgot-password")} 
+            className="text-[#F43F5E] hover:underline font-medium"
+          >
             Forgot password?
           </button>
         </div>
 
-        <Button disabled={isSubmitting} className="h-14 w-full text-xl font-semibold">
+        {/* Submit Button */}
+        <Button 
+          disabled={isSubmitting} 
+          className="h-14 w-full text-lg font-semibold bg-[#0F2A66] hover:bg-[#162f6e] text-white rounded-lg transition-colors"
+        >
           {isSubmitting ? "Logging in..." : "Log in"}
         </Button>
       </form>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { AuthCard } from "@/components/shared/auth-card";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function VerifyOtpPage() {
   const router = useRouter();
@@ -19,10 +20,18 @@ export default function VerifyOtpPage() {
 
   return (
     <AuthCard>
-      <div className="mb-8 text-center">
-        <div className="mx-auto mb-2 text-base font-semibold text-[#21365f]">S</div>
+      <div className="mb-4 flex flex-col items-center justify-center gap-3">
+        <Image
+          src="/icon-logo.png"
+          alt="Solace logo"
+          width={60}
+          height={60}
+          className="mb-2"
+        />
         <h1 className="text-base font-semibold text-[#1f2b44]">Verify Email</h1>
-        <p className="mt-3 text-base text-slate-500">Enter your email to recover your password</p>
+        <p className="mt-3 text-base text-slate-500">
+          Enter your email to recover your password
+        </p>
       </div>
 
       <div className="grid grid-cols-6 gap-3">
@@ -46,7 +55,9 @@ export default function VerifyOtpPage() {
         disabled={token.length < 6}
         onClick={() => {
           toast.success("OTP verified");
-          router.push(`/reset-password?token=${token}&email=${encodeURIComponent(email)}`);
+          router.push(
+            `/reset-password?token=${token}&email=${encodeURIComponent(email)}`,
+          );
         }}
       >
         Send OTP

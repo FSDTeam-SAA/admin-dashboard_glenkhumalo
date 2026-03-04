@@ -74,11 +74,11 @@ export function Sidebar() {
         {/* Logo Section */}
         <div className="mb-10 flex items-center gap-3">
           <Image
-            src="/icon-logo.png"
+            src="/logo.png"
             alt="Solace logo"
-            width={42}
-            height={42}
-            className="h-11 w-11 rounded-full"
+            width={500}
+            height={500}
+            className="h-[57px] w-[264px]"
           />
         </div>
 
